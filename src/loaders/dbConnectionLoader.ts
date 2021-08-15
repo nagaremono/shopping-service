@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-export const dbConnectionLoader = async (): Promise<void> => {
+export const dbConnectionLoader = async (): Promise<Sequelize> => {
   const sequelize = new Sequelize({
     dialect: 'postgres',
     database: process.env.DB_NAME,
@@ -16,4 +16,5 @@ export const dbConnectionLoader = async (): Promise<void> => {
   } catch (error) {
     console.error(error);
   }
+  return sequelize;
 };
