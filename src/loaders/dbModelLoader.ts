@@ -1,11 +1,30 @@
-import { Sequelize } from 'sequelize/types';
+import { Sequelize } from 'sequelize';
 import { initProduct } from '../models/Product';
-import { initUser } from '../models/User';
+import { initSoldItem, initSoldItemRelations } from '../models/SoldItem';
+import {
+  initTransaction,
+  initTransactionRelations,
+} from '../models/Transaction';
+import { initUser, initUserRelations } from '../models/User';
 
 export function dbModelLoader(sequelize: Sequelize): void {
-  const modelInitializers = [initUser, initProduct];
+  const modelInitializers = [
+    initUser,
+    initProduct,
+    initTransaction,
+    initSoldItem,
+  ];
+  const relationInitializers = [
+    initUserRelations,
+    initTransactionRelations,
+    initSoldItemRelations,
+  ];
 
   for (const modelInitializer of modelInitializers) {
     modelInitializer(sequelize);
+  }
+
+  for (const relationInitializer of relationInitializers) {
+    relationInitializer();
   }
 }

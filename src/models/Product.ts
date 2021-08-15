@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize/types';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 interface ProductAttributes {
   id: number;

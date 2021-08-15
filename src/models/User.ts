@@ -1,4 +1,5 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { Association, DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { Transaction } from './Transaction';
 
 interface UserAttributes {
   id: number;
@@ -24,6 +25,12 @@ export class User
   email!: string;
 
   password!: string;
+
+  transactions?: Transaction[];
+
+  static associations: {
+    transactions: Association<User, Transaction>;
+  };
 }
 
 export function initUser(sequelize: Sequelize): void {
@@ -53,4 +60,14 @@ export function initUser(sequelize: Sequelize): void {
       sequelize,
     }
   );
+}
+
+export function initUserRelations(): void {
+  User.hasMany(Transaction, {
+    foreignKey: {
+      name: 'customerId',
+      field: 'customer_id',
+    },
+    as: 'transactions',
+  });
 }
