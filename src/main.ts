@@ -1,14 +1,12 @@
 import 'reflect-metadata';
-import dotenvSafe from 'dotenv-safe';
 import { load } from './loaders';
-
-dotenvSafe.config();
+import { CONFIG } from './config/config';
 
 async function startServer() {
   const app = await load();
 
-  app.listen(parseInt(process.env.PORT, 10), () => {
-    console.log(`server started on *:${process.env.PORT}`);
+  app.listen(CONFIG.PORT, () => {
+    console.log(`server started on *:${CONFIG.PORT}`);
   });
 }
 

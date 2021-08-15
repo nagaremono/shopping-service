@@ -1,13 +1,14 @@
 import { Sequelize } from 'sequelize';
+import { CONFIG } from '../config/config';
 
 export const dbConnectionLoader = async (): Promise<Sequelize> => {
   const sequelize = new Sequelize({
     dialect: 'postgres',
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    username: process.env.DB_USERNAME,
-    port: parseInt(process.env.DB_PORT, 10),
-    host: process.env.DB_HOST,
+    database: CONFIG.DB.NAME,
+    password: CONFIG.DB.PASSWORD,
+    username: CONFIG.DB.USERNAME,
+    port: CONFIG.DB.PORT,
+    host: CONFIG.DB.HOST,
   });
 
   try {
