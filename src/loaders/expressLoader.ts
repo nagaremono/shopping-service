@@ -15,6 +15,7 @@ export const expressLoader = (): Application => {
   const myOptions: RoutingControllersOptions = {
     routePrefix: '/api',
     controllers: [path.join(__dirname, '..', 'controllers', '*.js')],
+    middlewares: [path.join(__dirname, '..', 'middlewares', '*.js')],
   };
 
   const spec = routingControllersToSpec(getMetadataArgsStorage(), myOptions, {

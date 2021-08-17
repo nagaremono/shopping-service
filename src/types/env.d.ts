@@ -7,5 +7,7 @@ declare namespace NodeJS {
     DB_NAME: string;
     DB_PORT: string;
     DB_HOST: string;
+    REDIS_URL: string;
+    SESSION_SECRET: string;
   }
 }

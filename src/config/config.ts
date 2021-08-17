@@ -11,4 +11,7 @@ export const CONFIG = {
     PASSWORD: process.env.DB_PASSWORD,
     HOST: process.env.DB_HOST,
   },
+  REDIS_URL: process.env.REDIS_URL,
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  COOKIE_NAME: 'qid',
 };
