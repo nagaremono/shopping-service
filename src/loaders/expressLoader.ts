@@ -1,6 +1,7 @@
 import { Application } from 'express';
 import express from 'express';
 import {
+  Action,
   getMetadataArgsStorage,
   RoutingControllersOptions,
   useExpressServer,
@@ -19,6 +20,9 @@ export const expressLoader = (): Application => {
     routePrefix: '/api',
     controllers: [path.join(__dirname, '..', 'controllers', '*.js')],
     middlewares: [path.join(__dirname, '..', 'middlewares', '*.js')],
+    authorizationChecker: (action: Action) => {
+      return !!action.request.session.userId;
+    },
   };
 
   const schemas = validationMetadatasToSchemas({
