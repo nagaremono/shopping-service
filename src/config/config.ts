@@ -14,4 +14,5 @@ export const CONFIG = {
   REDIS_URL: process.env.REDIS_URL,
   SESSION_SECRET: process.env.SESSION_SECRET,
   COOKIE_NAME: 'qid',
+  ORIGIN: `http://localhost:${parseInt(process.env.PORT, 10)}`,
 };

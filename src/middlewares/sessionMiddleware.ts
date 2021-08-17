@@ -25,6 +25,7 @@ export class SessionMiddleware implements ExpressMiddlewareInterface {
         sameSite: 'lax',
         secure: CONFIG.NODE_ENV === 'production',
       },
+      saveUninitialized: false,
     })(req, res, next);
   }
 }

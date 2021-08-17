@@ -8,6 +8,9 @@ import {
 import path from 'path';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import swaggerUI from 'swagger-ui-express';
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+import cors from 'cors';
+import { CONFIG } from '../config/config';
 
 export const expressLoader = (): Application => {
   const app = express();
@@ -18,6 +21,10 @@ export const expressLoader = (): Application => {
     middlewares: [path.join(__dirname, '..', 'middlewares', '*.js')],
   };
 
+  const schemas = validationMetadatasToSchemas({
+    refPointerPrefix: '#/components/schemas/',
+  });
+
   const spec = routingControllersToSpec(getMetadataArgsStorage(), myOptions, {
     info: {
       title: 'Simple Shop Service',
@@ -26,8 +33,17 @@ export const expressLoader = (): Application => {
         name: 'MIT',
       },
     },
+    components: {
+      schemas,
+    },
   });
 
+  app.use(
+    cors({
+      credentials: true,
+      origin: CONFIG.ORIGIN,
+    })
+  );
   app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(spec));
 
   useExpressServer(app, myOptions);
