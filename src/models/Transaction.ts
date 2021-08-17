@@ -17,7 +17,7 @@ export class Transaction
 {
   readonly createdAt!: Date;
 
-  readonly updateAt!: Date;
+  readonly updatedAt!: Date;
 
   id!: string;
 
