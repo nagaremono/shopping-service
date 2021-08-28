@@ -1,12 +1,15 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { injectable } from 'inversify';
 import {
   BadRequestError,
   Body,
+  Get,
   JsonController,
   Post,
   Req,
+  Res,
 } from 'routing-controllers';
+import { CONFIG } from '../config/config';
 import { LoginDTO } from '../dtos/LoginDTO';
 import { User } from '../models/User';
 import { AuthService } from '../services/authService';
@@ -29,5 +32,21 @@ export class AuthController {
     } catch (error) {
       throw new BadRequestError(error.message);
     }
+  }
+
+  @Get('/logout')
+  logout(
+    @Req() req: Request,
+    @Res() res: Response
+  ): Promise<Record<string, string>> {
+    return new Promise((resolve, reject) => {
+      req.session.destroy((err) => {
+        if (err) {
+          reject({ result: 'error' });
+        }
+        res.clearCookie(CONFIG.COOKIE_NAME);
+        resolve({ result: 'ok' });
+      });
+    });
   }
 }
