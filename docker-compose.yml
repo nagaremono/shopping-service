@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  app:
+    image: node:14-bullseye
+    command: 'sh -c "yarn dev"'
+    working_dir: /usr/src/app
+    ports:
+      - 4000:4000
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      PORT: 4000
+      DB_PORT: 5432
+      DB_HOST: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+      NODE_ENV: development
+      REDIS_URL: redis
+    depends_on:
+      - postgres
+      - redis
+  postgres:
+    image: postgres
+    volumes:
+      - shop-service-postgres:/var/lib/postgresql/data
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: 'redis:alpine'
+
+volumes:
+  shop-service-postgres:
