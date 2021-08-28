@@ -12,6 +12,7 @@ import swaggerUI from 'swagger-ui-express';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import cors from 'cors';
 import { CONFIG } from '../config/config';
+import { User } from '../models/User';
 
 export const expressLoader = (): Application => {
   const app = express();
@@ -20,14 +21,14 @@ export const expressLoader = (): Application => {
     routePrefix: '/api',
     controllers: [path.join(__dirname, '..', 'controllers', '*.js')],
     middlewares: [path.join(__dirname, '..', 'middlewares', '*.js')],
-    authorizationChecker: (action: Action) => {
-      return !!action.request.session.userId;
-    },
+    authorizationChecker: (action: Action) => !!action.request.session.userId,
     validation: {
       validationError: {
         target: false,
       },
     },
+    currentUserChecker: async (action: Action) =>
+      User.findByPk(action.request.session.userId),
   };
 
   const schemas = validationMetadatasToSchemas({
