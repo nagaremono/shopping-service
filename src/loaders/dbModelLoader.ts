@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { initProduct } from '../models/Product';
+import { initProduct, initProductRelations } from '../models/Product';
 import { initSoldItem, initSoldItemRelations } from '../models/SoldItem';
 import {
   initTransaction,
@@ -18,6 +18,7 @@ export function dbModelLoader(sequelize: Sequelize): void {
     initUserRelations,
     initTransactionRelations,
     initSoldItemRelations,
+    initProductRelations,
   ];
 
   for (const modelInitializer of modelInitializers) {

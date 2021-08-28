@@ -1,4 +1,5 @@
 import { Association, DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { Product } from './Product';
 import { Transaction } from './Transaction';
 
 interface SoldItemAttributes {
@@ -8,6 +9,7 @@ interface SoldItemAttributes {
   price: string;
   name: string;
   transactionId: string;
+  productId: number;
 }
 
 type SoldItemCreationAttributes = Optional<SoldItemAttributes, 'id'>;
@@ -34,8 +36,13 @@ export class SoldItem
 
   transaction?: Transaction;
 
+  productId!: number;
+
+  product?: Product;
+
   static associations: {
     transaction: Association<SoldItem, Transaction>;
+    product: Association<SoldItem, Product>;
   };
 }
 
@@ -68,6 +75,11 @@ export function initSoldItem(sequelize: Sequelize): void {
         allowNull: false,
         field: 'transaction_id',
       },
+      productId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: 'product_id',
+      },
     },
     {
       tableName: 'sold_item',
@@ -79,5 +91,8 @@ export function initSoldItem(sequelize: Sequelize): void {
 export function initSoldItemRelations(): void {
   SoldItem.belongsTo(Transaction, {
     as: 'transaction',
+  });
+  SoldItem.belongsTo(Product, {
+    as: 'product',
   });
 }

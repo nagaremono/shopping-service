@@ -1,4 +1,5 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { Association, DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { SoldItem } from './SoldItem';
 
 interface ProductAttributes {
   id: number;
@@ -27,6 +28,12 @@ export class Product
   name!: string;
 
   images!: string[];
+
+  soldItems?: SoldItem[];
+
+  static associations: {
+    soldItems: Association<Product, SoldItem>;
+  };
 }
 
 export function initProduct(sequelize: Sequelize): void {
@@ -59,4 +66,14 @@ export function initProduct(sequelize: Sequelize): void {
       sequelize,
     }
   );
+}
+
+export function initProductRelations(): void {
+  Product.hasMany(SoldItem, {
+    foreignKey: {
+      name: 'productId',
+      field: 'product_id',
+    },
+    as: 'soldItems',
+  });
 }

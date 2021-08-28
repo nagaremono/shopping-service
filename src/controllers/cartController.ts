@@ -9,6 +9,7 @@ import {
   Req,
 } from 'routing-controllers';
 import { AddProductToCartDTO } from '../dtos/addProductToCartDTO';
+import { Transaction } from '../models/Transaction';
 import { CartService } from '../services/cartService';
 import { Cart } from '../types/cart';
 import { CreateResult } from '../types/findResult';
@@ -26,6 +27,16 @@ export class CartController {
   ): Promise<CreateResult<Cart>> {
     try {
       return this.cartService.addToCart(body, req.session.userId as number);
+    } catch (error) {
+      throw new BadRequestError(error.message);
+    }
+  }
+
+  @Authorized()
+  @Post('/checkout', { transformResponse: false })
+  checkout(@Req() req: Request): Promise<CreateResult<Transaction>> {
+    try {
+      return this.cartService.checkout(req.session.userId as number);
     } catch (error) {
       throw new BadRequestError(error.message);
     }
