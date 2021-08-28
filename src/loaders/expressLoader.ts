@@ -23,6 +23,11 @@ export const expressLoader = (): Application => {
     authorizationChecker: (action: Action) => {
       return !!action.request.session.userId;
     },
+    validation: {
+      validationError: {
+        target: false,
+      },
+    },
   };
 
   const schemas = validationMetadatasToSchemas({
