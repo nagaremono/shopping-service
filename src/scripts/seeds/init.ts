@@ -17,8 +17,8 @@ async function main() {
   const sequelize = await dbConnectionLoader();
   dbModelLoader(sequelize);
 
-  await Product.destroy({ truncate: true });
-  await SoldItem.destroy({ truncate: true });
+  await Product.destroy({ truncate: true, cascade: true });
+  await SoldItem.destroy({ truncate: true, cascade: true });
   await Transaction.destroy({ truncate: true, cascade: true });
   await User.destroy({ truncate: true, cascade: true });
 
@@ -71,6 +71,7 @@ async function main() {
             totalAmount: (
               parseFloat(purchasedProduct.price) * boughtQuantity
             ).toFixed(2),
+            paymentStatus: 'paid',
           },
           { transaction: t }
         );
@@ -82,6 +83,7 @@ async function main() {
             images: purchasedProduct.images,
             name: purchasedProduct.name,
             quantity: boughtQuantity,
+            productId: purchasedProduct.id,
           },
           { transaction: t }
         );
@@ -104,8 +106,6 @@ async function main() {
       console.error(error);
     }
   }
-
-  console.log(JSON.stringify(transactions, null, 4));
 }
 
 main().catch((error) => console.error(error));
