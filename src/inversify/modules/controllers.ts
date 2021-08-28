@@ -3,10 +3,12 @@ import { AuthController } from '../../controllers/authController';
 import { CartController } from '../../controllers/cartController';
 import { HelloController } from '../../controllers/helloController';
 import { ProductController } from '../../controllers/productController';
+import { TransactionController } from '../../controllers/transactionController';
 
 export const controllers = new ContainerModule((bind: interfaces.Bind) => {
   bind<HelloController>(HelloController).toSelf();
   bind<AuthController>(AuthController).toSelf();
   bind<ProductController>(ProductController).toSelf();
   bind<CartController>(CartController).toSelf();
+  bind<TransactionController>(TransactionController).toSelf();
 });

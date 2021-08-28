@@ -65,6 +65,7 @@ export class CartService {
             customerId: userId,
             totalAmount,
             transactionDate: new Date(),
+            paymentStatus: 'pending',
           },
           { transaction: t }
         );
