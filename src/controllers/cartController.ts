@@ -1,14 +1,14 @@
+import { Request } from 'express';
 import { injectable } from 'inversify';
 import {
   Authorized,
   BadRequestError,
   Body,
-  CurrentUser,
   JsonController,
   Post,
+  Req,
 } from 'routing-controllers';
 import { AddProductToCartDTO } from '../dtos/addProductToCartDTO';
-import { User } from '../models/User';
 import { CartService } from '../services/cartService';
 import { Cart } from '../types/cart';
 import { CreateResult } from '../types/findResult';
@@ -22,10 +22,10 @@ export class CartController {
   @Post('/add-to-cart')
   addToCart(
     @Body() body: AddProductToCartDTO,
-    @CurrentUser({ required: true }) user: User
+    @Req() req: Request
   ): Promise<CreateResult<Cart>> {
     try {
-      return this.cartService.addToCart(body, user.id);
+      return this.cartService.addToCart(body, req.session.userId as number);
     } catch (error) {
       throw new BadRequestError(error.message);
     }
